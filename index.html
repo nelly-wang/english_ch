@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语学习网 - 增强练习版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        nav {
+            background-color: #fff;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-links li {
+            margin: 5px 15px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #4b6cb7;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background-color: #4b6cb7;
+            color: white;
+        }
+        
+        .page {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .active-page {
+            display: block;
+        }
+        
+        .page h2 {
+            color: #4b6cb7;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f4ff;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h3 {
+            color: #4b6cb7;
+            margin-bottom: 10px;
+        }
+        
+        .card p {
+            color: #666;
+        }
+        
+        .flashcard {
+            perspective: 1000px;
+            width: 300px;
+            height: 200px;
+            margin: 20px auto;
+        }
+        
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .flashcard:hover .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .flashcard-front {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+        }
+        
+        .flashcard-back {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #333;
+            transform: rotateY(180deg);
+        }
+        
+        .word {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .meaning {
+            font-size: 1.2rem;
+        }
+        
+        .example {
+            font-style: italic;
+            margin-top: 10px;
+            color: #555;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        button {
+            background-color: #4b6cb7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #3a559d;
+        }
+        
+        .exercise {
+            background-color: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .option {
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            border: 2px solid #e4e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            border-color: #4b6cb7;
+        }
+        
+        .correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        
+        .incorrect {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e4e8f0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .exercise-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .exercise-counter {
+            font-weight: bold;
+            color: #4b6cb7;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e4e8f0;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #4b6cb7;
+            color: #4b6cb7;
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        
+        @media (max-width: 768px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-links li {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>英语学习网 - 增强练习版</h1>
+            <p>English Learning for Chinese Speakers</p>
+        </header>
+        
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')">首页</a></li>
+                <li><a href="#" onclick="showPage('vocabulary')">词汇</a></li>
+                <li><a href="#" onclick="showPage('grammar')">语法</a></li>
+                <li><a href="#" onclick="showPage('listening')">听力</a></li>
+                <li><a href="#" onclick="showPage('reading')">阅读</a></li>
+                <li><a href="#" onclick="showPage('writing')">写作</a></li>
+            </ul>
+        </nav>
+        
+        <!-- 首页内容 -->
+        <div id="home" class="page active-page">
+            <h2>欢迎来到英语学习网</h2>
+            <p>这是一个专为中文使用者设计的英语学习平台，提供词汇、语法、听力、阅读和写作练习。</p>
+            
+            <div class="card-container">
+                <div class="card" onclick="showPage('vocabulary')">
+                    <h3>词汇学习</h3>
+                    <p>掌握常用英语单词和短语</p>
+                    <p>包含5个以上练习</p>
+                </div>
+                <div class="card" onclick="showPage('grammar')">
+                    <h3>语法练习</h3>
+                    <p>学习英语语法规则和结构</p>
+                    <p>包含5个以上练习</p>
+                </div>
+                <div class="card" onclick="showPage('listening')">
+                    <h3>听力训练</h3>
+                    <p>提高英语听力理解能力</p>
+                    <p>包含5个以上练习</p>
+                </div>
+                <div class="card" onclick="showPage('reading')">
+                    <h3>阅读理解</h3>
+                    <p>通过阅读提高英语水平</p>
+                    <p>包含5个以上练习</p>
+                </div>
+                <div class="card" onclick="showPage('writing')">
+                    <h3>写作练习</h3>
+                    <p>提高英语写作能力</p>
+                    <p>包含5个以上练习</p>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress" id="overall-progress"></div>
+            </div>
+            <p>整体学习进度: <span id="progress-percent">0</span>%</p>
+        </div>
+        
+        <!-- 词汇页面 -->
+        <div id="vocabulary" class="page">
+            <h2>词汇学习 Vocabulary Learning</h2>
+            <p>点击卡片查看单词的中文意思。Click on the card to see the Chinese meaning.</p>
+            
+            <div class="flashcard">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="word" id="current-word">Hello</div>
+                        <p>点击翻转卡片</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="meaning">你好</div>
+                        <div class="example">Example: Hello, how are you?</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="prev-btn">上一个</button>
+                <button id="next-btn">下一个</button>
+            </div>
+            
+            <div class="exercise">
+                <h3>词汇匹配练习</h3>
+                <p>将英文单词与正确的中文意思匹配：</p>
+                <div class="options">
+                    <div class="option" onclick="checkVocabularyMatch(this, 'Book', '书')">Book - 书</div>
+                    <div class="option" onclick="checkVocabularyMatch(this, 'Pen', '钢笔')">Pen - 钢笔</div>
+                    <div class="option" onclick="checkVocabularyMatch(this, 'Computer', '电脑')">Computer - 电脑</div>
+                    <div class="option" onclick="checkVocabularyMatch(this, 'Water', '水')">Water - 水</div>
+                </div>
+                <p id="vocabulary-match-feedback" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>填空练习</h3>
+                <p>I need to drink _____ every day. (水)</p>
+                <input type="text" id="fill-blank-input" placeholder="输入英文单词">
+                <button onclick="checkFillBlank()">检查答案</button>
+                <p id="fill-blank-feedback" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>单词拼写</h3>
+                <p>根据中文意思拼写英文单词: 苹果</p>
+                <input type="text" id="spelling-input" placeholder="输入英文单词">
+                <button onclick="checkSpelling()">检查拼写</button>
+                <p id="spelling-feedback" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>同义词选择</h3>
+                <p>选择与"happy"意思相近的单词：</p>
+                <div class="options">
+                    <div class="option" onclick="checkSynonym(this, 'joyful')">joyful</div>
+                    <div class="option" onclick="checkSynonym(this, 'sad')">sad</div>
+                    <div class="option" onclick="checkSynonym(this, 'angry')">angry</div>
+                    <div class="option" onclick="checkSynonym(this, 'tired')">tired</div>
+                </div>
+                <p id="synonym-feedback" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>反义词选择</h3>
+                <p>选择与"hot"意思相反的单词：</p>
+                <div class="options">
+                    <div class="option" onclick="checkAntonym(this, 'cold')">cold</div>
+                    <div class="option" onclick="checkAntonym(this, 'warm')">warm</div>
+                    <div class="option" onclick="checkAntonym(this, 'spicy')">spicy</div>
+                    <div class="option" onclick="checkAntonym(this, 'boiling')">boiling</div>
+                </div>
+                <p id="antonym-feedback" class="hidden"></p>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress" id="vocab-progress"></div>
+            </div>
+            <p>词汇学习进度: <span id="vocab-percent">0</span>%</p>
+        </div>
+        
+        <!-- 语法页面 -->
+        <div id="grammar" class="page">
+            <h2>语法练习 Grammar Practice</h2>
+            <p>选择正确的选项来完成句子。Select the correct option to complete the sentence.</p>
+            
+            <div class="exercise">
+                <h3>动词时态练习</h3>
+                <p>She _____ to school every day.</p>
+                <div class="options">
+                    <div class="option" onclick="checkGrammarAnswer(this, 'goes', 'grammar-feedback-1')">go</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'goes', 'grammar-feedback-1')">goes</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'goes', 'grammar-feedback-1')">going</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'goes', 'grammar-feedback-1')">went</div>
+                </div>
+                <p id="grammar-feedback-1" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>现在进行时</h3>
+                <p>I _____ a book now.</p>
+                <div class="options">
+                    <div class="option" onclick="checkGrammarAnswer(this, 'am reading', 'grammar-feedback-2')">read</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'am reading', 'grammar-feedback-2')">am reading</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'am reading', 'grammar-feedback-2')">reads</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'am reading', 'grammar-feedback-2')">readed</div>
+                </div>
+                <p id="grammar-feedback-2" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>过去时练习</h3>
+                <p>Yesterday, I _____ to the park.</p>
+                <div class="options">
+                    <div class="option" onclick="checkGrammarAnswer(this, 'went', 'grammar-feedback-3')">go</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'went', 'grammar-feedback-3')">goes</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'went', 'grammar-feedback-3')">went</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'went', 'grammar-feedback-3')">going</div>
+                </div>
+                <p id="grammar-feedback-3" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>将来时练习</h3>
+                <p>Tomorrow, I _____ to the cinema.</p>
+                <div class="options">
+                    <div class="option" onclick="checkGrammarAnswer(this, 'will go', 'grammar-feedback-4')">go</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'will go', 'grammar-feedback-4')">went</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'will go', 'grammar-feedback-4')">will go</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'will go', 'grammar-feedback-4')">going</div>
+                </div>
+                <p id="grammar-feedback-4" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>现在完成时</h3>
+                <p>I _____ this movie three times.</p>
+                <div class="options">
+                    <div class="option" onclick="checkGrammarAnswer(this, 'have seen', 'grammar-feedback-5')">see</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'have seen', 'grammar-feedback-5')">saw</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'have seen', 'grammar-feedback-5')">have seen</div>
+                    <div class="option" onclick="checkGrammarAnswer(this, 'have seen', 'grammar-feedback-5')">seeing</div>
+                </div>
+                <p id="grammar-feedback-5" class="hidden"></p>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress" id="grammar-progress"></div>
+            </div>
+            <p>语法练习进度: <span id="grammar-percent">0</span>%</p>
+        </div>
+        
+        <!-- 听力页面 -->
+        <div id="listening" class="page">
+            <h2>听力练习 Listening Practice</h2>
+            <p>听录音并选择正确的答案。Listen to the recording and select the correct answer.</p>
+            
+            <div class="exercise">
+                <h3>听力理解 1</h3>
+                <p>点击播放按钮听录音：</p>
+                <button onclick="playAudio(1)">播放录音 1</button>
+                
+                <p>What did you hear?</p>
+                <div class="options">
+                    <div class="option" onclick="checkListeningAnswer(this, 'B', 'listening-feedback-1')">I like apples.</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'B', 'listening-feedback-1')">She likes apples.</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'B', 'listening-feedback-1')">We like apples.</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'B', 'listening-feedback-1')">They like apples.</div>
+                </div>
+                <p id="listening-feedback-1" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>听力理解 2</h3>
+                <p>点击播放按钮听录音：</p>
+                <button onclick="playAudio(2)">播放录音 2</button>
+                
+                <p>What did you hear?</p>
+                <div class="options">
+                    <div class="option" onclick="checkListeningAnswer(this, 'A', 'listening-feedback-2')">He is playing football.</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'A', 'listening-feedback-2')">She is playing basketball.</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'A', 'listening-feedback-2')">They are playing tennis.</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'A', 'listening-feedback-2')">We are watching TV.</div>
+                </div>
+                <p id="listening-feedback-2" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>听力理解 3</h3>
+                <p>点击播放按钮听录音：</p>
+                <button onclick="playAudio(3)">播放录音 3</button>
+                
+                <p>What time is it?</p>
+                <div class="options">
+                    <div class="option" onclick="checkListeningAnswer(this, 'C', 'listening-feedback-3')">8:00 AM</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'C', 'listening-feedback-3')">10:30 AM</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'C', 'listening-feedback-3')">3:15 PM</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'C', 'listening-feedback-3')">7:45 PM</div>
+                </div>
+                <p id="listening-feedback-3" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>听力理解 4</h3>
+                <p>点击播放按钮听录音：</p>
+                <button onclick="playAudio(4)">播放录音 4</button>
+                
+                <p>Where are they going?</p>
+                <div class="options">
+                    <div class="option" onclick="checkListeningAnswer(this, 'D', 'listening-feedback-4')">To the park</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'D', 'listening-feedback-4')">To the supermarket</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'D', 'listening-feedback-4')">To the library</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'D', 'listening-feedback-4')">To the restaurant</div>
+                </div>
+                <p id="listening-feedback-4" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>听力理解 5</h3>
+                <p>点击播放按钮听录音：</p>
+                <button onclick="playAudio(5)">播放录音 5</button>
+                
+                <p>What's the weather like?</p>
+                <div class="options">
+                    <div class="option" onclick="checkListeningAnswer(this, 'B', 'listening-feedback-5')">Sunny</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'B', 'listening-feedback-5')">Rainy</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'B', 'listening-feedback-5')">Cloudy</div>
+                    <div class="option" onclick="checkListeningAnswer(this, 'B', 'listening-feedback-5')">Snowy</div>
+                </div>
+                <p id="listening-feedback-5" class="hidden"></p>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress" id="listening-progress"></div>
+            </div>
+            <p>听力练习进度: <span id="listening-percent">0</span>%</p>
+        </div>
+        
+        <!-- 阅读页面 -->
+        <div id="reading" class="page">
+            <h2>阅读理解 Reading Comprehension</h2>
+            <p>阅读短文并回答问题。Read the passage and answer the questions.</p>
+            
+            <div class="exercise">
+                <h3>阅读短文 1</h3>
+                <p>Tom is a student. He is twelve years old. He goes to school from Monday to Friday. His favorite subject is English. He likes playing football after school.</p>
+                
+                <p>What is Tom's favorite subject?</p>
+                <div class="options">
+                    <div class="option" onclick="checkReadingAnswer(this, 'English', 'reading-feedback-1')">Math</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'English', 'reading-feedback-1')">English</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'English', 'reading-feedback-1')">Science</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'English', 'reading-feedback-1')">History</div>
+                </div>
+                <p id="reading-feedback-1" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>阅读短文 2</h3>
+                <p>Mary is a nurse. She works in a hospital. She helps doctors and patients. She usually works from 8 am to 5 pm, but sometimes she works at night. She likes her job because she can help people.</p>
+                
+                <p>Where does Mary work?</p>
+                <div class="options">
+                    <div class="option" onclick="checkReadingAnswer(this, 'Hospital', 'reading-feedback-2')">School</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'Hospital', 'reading-feedback-2')">Hospital</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'Hospital', 'reading-feedback-2')">Office</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'Hospital', 'reading-feedback-2')">Store</div>
+                </div>
+                <p id="reading-feedback-2" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>阅读短文 3</h3>
+                <p>My family likes to travel. Last summer, we went to Beijing. We visited the Great Wall and the Forbidden City. We ate delicious Chinese food. We took many photos. We had a wonderful time.</p>
+                
+                <p>Where did they go last summer?</p>
+                <div class="options">
+                    <div class="option" onclick="checkReadingAnswer(this, 'Beijing', 'reading-feedback-3')">Shanghai</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'Beijing', 'reading-feedback-3')">Beijing</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'Beijing', 'reading-feedback-3')">Guangzhou</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'Beijing', 'reading-feedback-3')">Chengdu</div>
+                </div>
+                <p id="reading-feedback-3" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>阅读短文 4</h3>
+                <p>John has a pet dog. The dog's name is Max. Max is three years old. He is very friendly and smart. John takes Max for a walk every evening. Max likes to play with balls.</p>
+                
+                <p>How old is Max?</p>
+                <div class="options">
+                    <div class="option" onclick="checkReadingAnswer(this, 'Three', 'reading-feedback-4')">One</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'Three', 'reading-feedback-4')">Two</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'Three', 'reading-feedback-4')">Three</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'Three', 'reading-feedback-4')">Four</div>
+                </div>
+                <p id="reading-feedback-4" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>阅读短文 5</h3>
+                <p>Sara loves reading books. She goes to the library every Saturday. She likes mystery novels best. She has read over 100 books this year. Her dream is to become a writer.</p>
+                
+                <p>What kind of books does Sara like best?</p>
+                <div class="options">
+                    <div class="option" onclick="checkReadingAnswer(this, 'Mystery novels', 'reading-feedback-5')">Science fiction</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'Mystery novels', 'reading-feedback-5')">Mystery novels</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'Mystery novels', 'reading-feedback-5')">History books</div>
+                    <div class="option" onclick="checkReadingAnswer(this, 'Mystery novels', 'reading-feedback-5')">Poetry</div>
+                </div>
+                <p id="reading-feedback-5" class="hidden"></p>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress" id="reading-progress"></div>
+            </div>
+            <p>阅读练习进度: <span id="reading-percent">0</span>%</p>
+        </div>
+        
+        <!-- 写作页面 -->
+        <div id="writing" class="page">
+            <h2>写作练习 Writing Practice</h2>
+            <p>根据提示完成英语写作练习。Complete writing exercises based on prompts.</p>
+            
+            <div class="exercise">
+                <h3>写作练习 1</h3>
+                <p>写一段话介绍你自己（至少5句话）：</p>
+                <textarea id="writing-answer-1" rows="5" placeholder="在此输入你的回答..."></textarea>
+                <button onclick="checkWritingAnswer(1)">检查答案</button>
+                <p id="writing-feedback-1" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>写作练习 2</h3>
+                <p>描述你最喜欢的季节，并说明为什么喜欢它：</p>
+                <textarea id="writing-answer-2" rows="5" placeholder="在此输入你的回答..."></textarea>
+                <button onclick="checkWritingAnswer(2)">检查答案</button>
+                <p id="writing-feedback-2" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>写作练习 3</h3>
+                <p>写一封电子邮件给你的朋友，邀请他/她参加你的生日聚会：</p>
+                <textarea id="writing-answer-3" rows="5" placeholder="在此输入你的回答..."></textarea>
+                <button onclick="checkWritingAnswer(3)">检查答案</button>
+                <p id="writing-feedback-3" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>写作练习 4</h3>
+                <p>描述你最近一次旅行的经历：</p>
+                <textarea id="writing-answer-4" rows="5" placeholder="在此输入你的回答..."></textarea>
+                <button onclick="checkWritingAnswer(4)">检查答案</button>
+                <p id="writing-feedback-4" class="hidden"></p>
+            </div>
+            
+            <div class="exercise">
+                <h3>写作练习 5</h3>
+                <p>比较城市生活和乡村生活的优缺点：</p>
+                <textarea id="writing-answer-5" rows="5" placeholder="在此输入你的回答..."></textarea>
+                <button onclick="checkWritingAnswer(5)">检查答案</button>
+                <p id="writing-feedback-5" class="hidden"></p>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress" id="writing-progress"></div>
+            </div>
+            <p>写作练习进度: <span id="writing-percent">0</span>%</p>
+        </div>
+        
+        <footer>
+            <p>© 2023 英语学习网 - 为中文使用者设计的英语学习网站</p>
+            <p>本网站仅使用HTML, CSS和JavaScript构建</p>
+        </footer>
+    </div>
+
+    <script>
+        // 页面导航功能
+        function showPage(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active-page');
+            });
+            
+            // 显示选中的页面
+            document.getElementById(pageId).classList.add('active-page');
+            
+            // 更新进度条
+            updateProgress();
+        }
+        
+        // 词汇数据
+        const vocabulary = [
+            { word: "Hello", meaning: "你好", example: "Hello, how are you?" },
+            { word: "Goodbye", meaning: "再见", example: "Goodbye, see you tomorrow!" },
+            { word: "Thank you", meaning: "谢谢", example: "Thank you for your help." },
+            { word: "Please", meaning: "请", example: "Please come in." },
+            { word: "Sorry", meaning: "对不起", example: "I'm sorry for being late." },
+            { word: "Yes", meaning: "是", example: "Yes, I understand." },
+            { word: "No", meaning: "不", example: "No, thank you." },
+            { word: "Friend", meaning: "朋友", example: "She is my best friend." },
+            { word: "Family", meaning: "家庭", example: "I love my family." },
+            { word: "Food", meaning: "食物", example: "Chinese food is delicious." }
+        ];
+        
+        let currentWordIndex = 0;
+        const wordElement = document.getElementById('current-word');
+        const meaningElement = document.querySelector('.meaning');
+        const exampleElement = document.querySelector('.example');
+        
+        // 初始化第一个单词
+        updateFlashcard();
+        
+        // 下一个和上一个按钮
+        document.getElementById('next-btn').addEventListener('click', () => {
+            currentWordIndex = (currentWordIndex + 1) % vocabulary.length;
+            updateFlashcard();
+            updateProgress();
+        });
+        
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            currentWordIndex = (currentWordIndex - 1 + vocabulary.length) % vocabulary.length;
+            updateFlashcard();
+        });
+        
+        function updateFlashcard() {
+            const currentWord = vocabulary[currentWordIndex];
+            wordElement.textContent = currentWord.word;
+            meaningElement.textContent = currentWord.meaning;
+            exampleElement.textContent = `Example: ${currentWord.example}`;
+        }
+        
+        // 进度跟踪
+        const userProgress = {
+            vocabulary: 0,
+            grammar: 0,
+            listening: 0,
+            reading: 0,
+            writing: 0
+        };
+        
+        function updateProgress() {
+            // 更新词汇进度
+            userProgress.vocabulary = Math.min(100, Math.floor((currentWordIndex / vocabulary.length) * 100));
+            document.getElementById('vocab-progress').style.width = userProgress.vocabulary + '%';
+            document.getElementById('vocab-percent').textContent = userProgress.vocabulary;
+            
+            // 计算整体进度
+            const totalProgress = (userProgress.vocabulary + userProgress.grammar + userProgress.listening + userProgress.reading + userProgress.writing) / 5;
+            document.getElementById('overall-progress').style.width = totalProgress + '%';
+            document.getElementById('progress-percent').textContent = Math.floor(totalProgress);
+            
+            // 更新其他进度条
+            document.getElementById('grammar-progress').style.width = userProgress.grammar + '%';
+            document.getElementById('grammar-percent').textContent = userProgress.grammar;
+            
+            document.getElementById('listening-progress').style.width = userProgress.listening + '%';
+            document.getElementById('listening-percent').textContent = userProgress.listening;
+            
+            document.getElementById('reading-progress').style.width = userProgress.reading + '%';
+            document.getElementById('reading-percent').textContent = userProgress.reading;
+            
+            document.getElementById('writing-progress').style.width = userProgress.writing + '%';
+            document.getElementById('writing-percent').textContent = userProgress.writing;
+        }
+        
+        // 词汇练习检查
+        function checkVocabularyMatch(element, word, meaning) {
+            const options = element.parentElement.children;
+            const feedback = document.getElementById('vocabulary-match-feedback');
+            
+            // 移除之前的样式
+            for (let opt of options) {
+                opt.classList.remove('correct', 'incorrect');
+            }
+            
+            if (element.textContent === `${word} - ${meaning}`) {
+                element.classList.add('correct');
+                feedback.textContent = "正确！";
+                feedback.style.color = "green";
+                userProgress.vocabulary = Math.min(100, userProgress.vocabulary + 10);
+            } else {
+                element.classList.add('incorrect');
+                feedback.textContent = "不正确。";
+                feedback.style.color = "red";
+                
+                // 显示正确答案
+                for (let opt of options) {
+                    if (opt.textContent === `${word} - ${meaning}`) {
+                        opt.classList.add('correct');
+                    }
+                }
+            }
+            
+            feedback.classList.remove('hidden');
+            updateProgress();
+        }
+        
+        function checkFillBlank() {
+            const input = document.getElementById('fill-blank-input');
+            const feedback = document.getElementById('fill-blank-feedback');
+            
+            if (input.value.toLowerCase() === 'water') {
+                feedback.textContent = "正确！";
+                feedback.style.color = "green";
+                userProgress.vocabulary = Math.min(100, userProgress.vocabulary + 10);
+            } else {
+                feedback.textContent = "不正确。正确答案是: water";
+                feedback.style.color = "red";
+            }
+            
+            feedback.classList.remove('hidden');
+            updateProgress();
+        }
+        
+        function checkSpelling() {
+            const input = document.getElementById('spelling-input');
+            const feedback = document.getElementById('spelling-feedback');
+            
+            if (input.value.toLowerCase() === 'apple') {
+                feedback.textContent = "正确！";
+                feedback.style.color = "green";
+                userProgress.vocabulary = Math.min(100, userProgress.vocabulary + 10);
+            } else {
+                feedback.textContent = "不正确。正确答案是: apple";
+                feedback.style.color = "red";
+            }
+            
+            feedback.classList.remove('hidden');
+            updateProgress();
+        }
+        
+        function checkSynonym(element, answer) {
+            const options = element.parentElement.children;
+            const feedback = document.getElementById('synonym-feedback');
+            
+            // 移除之前的样式
+            for (let opt of options) {
+                opt.classList.remove('correct', 'incorrect');
+            }
+            
+            if (answer === 'joyful') {
+                element.classList.add('correct');
+                feedback.textContent = "正确！joyful 是 happy 的同义词";
+                feedback.style.color = "green";
+                userProgress.vocabulary = Math.min(100, userProgress.vocabulary + 10);
+            } else {
+                element.classList.add('incorrect');
+                feedback.textContent = "不正确。正确答案是: joyful";
+                feedback.style.color = "red";
+                
+                // 显示正确答案
+                for (let opt of options) {
+                    if (opt.textContent === 'joyful') {
+                        opt.classList.add('correct');
+                    }
+                }
+            }
+            
+            feedback.classList.remove('hidden');
+            updateProgress();
+        }
+        
+        function checkAntonym(element, answer) {
+            const options = element.parentElement.children;
+            const feedback = document.getElementById('antonym-feedback');
+            
+            // 移除之前的样式
+            for (let opt of options) {
+                opt.classList.remove('correct', 'incorrect');
+            }
+            
+            if (answer === 'cold') {
+                element.classList.add('correct');
+                feedback.textContent = "正确！cold 是 hot 的反义词";
+                feedback.style.color = "green";
+                userProgress.vocabulary = Math.min(100, userProgress.vocabulary + 10);
+            } else {
+                element.classList.add('incorrect');
+                feedback.textContent = "不正确。正确答案是: cold";
+                feedback.style.color = "red";
+                
+                // 显示正确答案
+                for (let opt of options) {
+                    if (opt.textContent === 'cold') {
+                        opt.classList.add('correct');
+                    }
+                }
+            }
+            
+            feedback.classList.remove('hidden');
+            updateProgress();
+        }
+        
+        // 语法检查
+        function checkGrammarAnswer(element, answer, feedbackId) {
+            const options = element.parentElement.children;
+            const feedback = document.getElementById(feedbackId);
+            
+            // 移除之前的样式
+            for (let opt of options) {
+                opt.classList.remove('correct', 'incorrect');
+            }
+            
+            if (element.textContent === answer) {
+                element.classList.add('correct');
+                feedback.textContent = "正确！";
+                feedback.style.color = "green";
+                userProgress.grammar = Math.min(100, userProgress.grammar + 20);
+            } else {
+                element.classList.add('incorrect');
+                feedback.textContent = "不正确。正确答案是: " + answer;
+                feedback.style.color = "red";
+                
+                // 显示正确答案
+                for (let opt of options) {
+                    if (opt.textContent === answer) {
+                        opt.classList.add('correct');
+                    }
+                }
+            }
+            
+            feedback.classList.remove('hidden');
+            updateProgress();
+        }
+        
+        // 听力检查
+        function checkListeningAnswer(element, answer, feedbackId) {
+            const options = element.parentElement.children;
+            const feedback = document.getElementById(feedbackId);
+            
+            // 移除之前的样式
+            for (let opt of options) {
+                opt.classList.remove('correct', 'incorrect');
+            }
+            
+            if (element.textContent.includes(answer)) {
+                element.classList.add('correct');
+                feedback.textContent = "正确！";
+                feedback.style.color = "green";
+                userProgress.listening = Math.min(100, userProgress.listening + 20);
+            } else {
+                element.classList.add('incorrect');
+                feedback.textContent = "不正确。";
+                feedback.style.color = "red";
+            }
+            
+            feedback.classList.remove('hidden');
+            updateProgress();
+        }
+        
+        // 阅读检查
+        function checkReadingAnswer(element, answer, feedbackId) {
+            const options = element.parentElement.children;
+            const feedback = document.getElementById(feedbackId);
+            
+            // 移除之前的样式
+            for (let opt of options) {
+                opt.classList.remove('correct', 'incorrect');
+            }
+            
+            if (element.textContent === answer) {
+                element.classList.add('correct');
+                feedback.textContent = "正确！";
+                feedback.style.color = "green";
+                userProgress.reading = Math.min(100, userProgress.reading + 20);
+            } else {
+                element.classList.add('incorrect');
+                feedback.textContent = "不正确。正确答案是: " + answer;
+                feedback.style.color = "red";
+                
+                // 显示正确答案
+                for (let opt of options) {
+                    if (opt.textContent === answer) {
+                        opt.classList.add('correct');
+                    }
+                }
+            }
+            
+            feedback.classList.remove('hidden');
+            updateProgress();
+        }
+        
+        // 写作检查
+        function checkWritingAnswer(exerciseNum) {
+            const answer = document.getElementById(`writing-answer-${exerciseNum}`).value;
+            const feedback = document.getElementById(`writing-feedback-${exerciseNum}`);
+            
+            if (answer.length > 10) {
+                feedback.textContent = "很好！你的回答看起来不错。继续努力！";
+                feedback.style.color = "green";
+                userProgress.writing = Math.min(100, userProgress.writing + 20);
+            } else {
+                feedback.textContent = "请写得更详细一些，至少需要几个完整的句子。";
+                feedback.style.color = "red";
+            }
+            
+            feedback.classList.remove('hidden');
+            updateProgress();
+        }
+        
+        // 模拟音频播放
+        function playAudio(num) {
+            alert(`模拟播放音频 ${num} (在实际应用中，这里会播放真实音频)`);
+        }
+        
+        // 初始化进度条
+        updateProgress();
+    </script>
+</body>
+</html>
